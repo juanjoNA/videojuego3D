@@ -4,10 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - top
-  - left
-  - bottom
-  - right
+  - wall
+  - enemy
+  - palette
+  - win
   layers:
   - Default
   - TransparentFX

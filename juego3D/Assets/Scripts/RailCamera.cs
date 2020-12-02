@@ -6,6 +6,7 @@ public class RailCamera : MonoBehaviour
 {
     private Vector3[] nodes;
     private int countNode;
+    private int currentNode = 0;
 
     private void Start()
     {
@@ -62,20 +63,47 @@ public class RailCamera : MonoBehaviour
 
     private int GetClosestNode(Vector3 pos)
     {
-        int closestNode = -1;
         float shortDistance = 0.0f;
 
-        for(int i=0; i < countNode; i++)
+        if(currentNode == 0)
         {
-            float sqrDist = (nodes[i] - pos).sqrMagnitude;
-            if(shortDistance == 0.0f || sqrDist < shortDistance)
+            for (int i = currentNode; i <= currentNode + 1; i++)
             {
-                shortDistance = sqrDist;
-                closestNode = i;
+                float sqrDist = (nodes[i] - pos).sqrMagnitude;
+                if (shortDistance == 0.0f || sqrDist < shortDistance)
+                {
+                    shortDistance = sqrDist;
+                    currentNode = i;
+                }
             }
         }
+        else if(currentNode == countNode)
+        {
+            for (int i = currentNode - 1; i <= currentNode + 1; i++)
+            {
+                float sqrDist = (nodes[i] - pos).sqrMagnitude;
+                if (shortDistance == 0.0f || sqrDist < shortDistance)
+                {
+                    shortDistance = sqrDist;
+                    currentNode = i;
+                }
+            }
+        }
+        else
+        {
+            for (int i = currentNode-1; i <= currentNode+1; i++)
+            {
+                float sqrDist = (nodes[i] - pos).sqrMagnitude;
+                if (shortDistance == 0.0f || sqrDist < shortDistance)
+                {
+                    shortDistance = sqrDist;
+                    currentNode = i;
+                }
+            }
+        }
+       
 
-        return closestNode;
+        return currentNode;
 
     }
 

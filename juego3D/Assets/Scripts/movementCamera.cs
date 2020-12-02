@@ -19,7 +19,7 @@ public class movementCamera : MonoBehaviour
     {
         thisTransform.position = rail.ProjectPosCameraOnRail(lookAt.position);
 
-        thisTransform.LookAt(lookAt.position);
+        //thisTransform.LookAt(lookAt.position);
     }
 
 
