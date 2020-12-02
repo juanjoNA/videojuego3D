@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class movementCamera : MonoBehaviour
 {
-    Vector3 distance;
-    public GameObject player;
+    public RailCamera rail;
+    public Transform lookAt;
+
+    private Transform thisTransform;
 
     // Start is called before the first frame update
     void Start()
     {
-        distance = player.transform.position - transform.position;
+        thisTransform = transform;
     }
 
     void LateUpdate()
     {
-        transform.position = player.transform.position - distance;
+        thisTransform.position = rail.ProjectPosCameraOnRail(lookAt.position);
+
+        thisTransform.LookAt(lookAt.position);
     }
 
 

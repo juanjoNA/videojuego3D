@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PaletteMovement : MonoBehaviour
 {
-    public float speed = 5;
+    public float speed;
+    public Vector3 movement;
+    public float distancePlayer;
     public GameObject player;
     private Rigidbody rb;
+    public float ymin, ymax;
 
     private void Start()
     {
@@ -16,23 +19,71 @@ public class PaletteMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*float dist = Mathf.Abs(Vector3.Distance(player.transform.position, transform.position));
-        if(dist < 10)
+        if(player.transform.position.y < ymin && player.transform.position.y > ymax)
         {
-            float dif;
-            dif = player.transform.position.y - transform.position.y;
-            if(dif > 5) rb.velocity = new Vector3(0, speed*2, 0);
-            else if(dif < 5) rb.velocity = new Vector3(0, -speed * 2, 0);
-            else rb.velocity = new Vector3(0, speed, 0);
+            Vector3 posPlayer = player.transform.position;
+            Vector3 posPalette = transform.position;
+            float distX = Mathf.Abs(posPlayer.x - posPalette.x);
+            float distY = Mathf.Abs(posPlayer.y - posPalette.y);
+            Debug.Log("DISTX = " + distX + "\nDISTY = " + distY);
+            if (movement.x != 0)
+            {
+                if (distY < distancePlayer)
+                {
+                    if (distX> distancePlayer * 2)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    /*
+                    Vector3 plPos = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+                    transform.position = Vector3.MoveTowards(transform.position, plPos, (20) * Time.deltaTime);*/
+                }
+            }
+            else if (movement.y != 0)
+            {
+                if (distX < distancePlayer)
+                {
+                    if(player.transform.)
+                    if (distY >= 5)
+                    {
+                        if(posPlayer.y > posPalette.y) movement.y = 1;
+                        else movement.y = -1;
+                        
+                        transform.Translate(movement * speed*3);
+                    }
+                    else if(distY >= 2) transform.Translate(movement * speed * 3);
+                    else  transform.Translate(movement * speed);
+                    
+
+                    /*
+                    Vector3 plPos = new Vector3(transform.position.x, player.transform.position.y, transform.position.z);
+                    transform.position = Vector3.MoveTowards(transform.position, plPos, (20) * Time.deltaTime);*/
+                }
+                else
+                {
+                    transform.Translate(movement * speed);
+                }
+            }
+
+
+            
+            else if(distX < 50)
+            {
+                transform.Translate(movement*speed);
+            }
         }
-        else
-        {*/
-            transform.Translate(0.0f, speed*Time.deltaTime, 0.0f);
-        //}
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        speed = -speed;
+
+        if (movement.x != 0) movement.x = -movement.x;
+        else if (movement.y != 0) movement.y = -movement.y;
+        
     }
 }

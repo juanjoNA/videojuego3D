@@ -4,31 +4,48 @@ using UnityEngine;
 
 public class playerMovement : MonoBehaviour
 {
-    public Vector3 movement = new Vector3(5, 5, 0);
+    private Vector3 movement = new Vector3(10, 10, 0);
     Rigidbody rb;
     float timeFromPreviousMove;
+    public int speed;
 
     private void Update()
     {
         timeFromPreviousMove += Time.deltaTime;
-        if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.5f)
+        if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.2f)
         {
             movement.y = -movement.y;
             timeFromPreviousMove = 0.0f;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "top" || collision.gameObject.tag == "bottom")
-        {
-            movement.y = -movement.y;
-        }
-        else if(collision.gameObject.tag == "right" || collision.gameObject.tag == "left")
-        {
-            movement.x = -movement.x;
-        }
+        ReflectProjectile(rb, collision.contacts[0].normal);
     }
+
+    private void ReflectProjectile(Rigidbody rb, Vector3 reflectVector)
+    {
+        movement = Vector3.Reflect(movement, reflectVector);
+        rb.velocity = movement;
+    }
+
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        Vector3 dir = collision.contacts[0].point - transform.position;
+        Debug.Log("DIR = " + dir.ToString());
+        Debug.Log("DIR NORMALIZED = " + dir.normalized.ToString());
+        movement = -dir.normalized*speed;
+        
+         if(collision.gameObject.tag == "top" || collision.gameObject.tag == "bottom")
+         {
+             movement.y = -movement.y;
+         }
+         else if(collision.gameObject.tag == "right" || collision.gameObject.tag == "left")
+         {
+             movement.x = -movement.x;
+         }
+}*/
 
 
     private void FixedUpdate()
@@ -40,5 +57,7 @@ public class playerMovement : MonoBehaviour
     {
         timeFromPreviousMove = 0.0f;
         rb = GetComponent<Rigidbody>();
+
+        rb.AddForce(movement, ForceMode.VelocityChange);
     }
 }
