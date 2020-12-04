@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.SceneManagement;
+
 public class playerMovement : MonoBehaviour
 {
-    private Vector3 movement = new Vector3(10, 10, 0);
+    private Vector3 movement = new Vector3(1, 1, 0);
     Rigidbody rb;
     float timeFromPreviousMove;
+    private Vector3 controlPos;
+    private ActivateControlPoint scriptActivation;
     public int speed;
+    private ChangeScenes csManager;
 
     private void Update()
     {
@@ -21,43 +26,68 @@ public class playerMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        ReflectProjectile(rb, collision.contacts[0].normal);
-    }
+        if(collision.collider.tag == "wall" || collision.collider.tag == "palette")
+        {
+            Vector3 side = collision.contacts[0].normal;
+            if(side == transform.up) movement.y = 1;
+            else if( side == -transform.up) movement.y = -1;
+            else if( side == transform.right)  movement.x = 1;
+            else if( side == -transform.right) movement.x = -1;
+            
+        }else if(collision.collider.tag == "enemy")
+        {
+            movement = new Vector3(0, 0, 0);
+            Animation anim = collision.collider.gameObject.GetComponent<Animation>();
+            if (anim != null && !anim.isPlaying)
+            {
+                anim.Play();
+                while (anim.isPlaying) ;
+            }
 
-    private void ReflectProjectile(Rigidbody rb, Vector3 reflectVector)
-    {
-        movement = Vector3.Reflect(movement, reflectVector);
-        rb.velocity = movement;
-    }
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        Vector3 dir = collision.contacts[0].point - transform.position;
-        Debug.Log("DIR = " + dir.ToString());
-        Debug.Log("DIR NORMALIZED = " + dir.normalized.ToString());
-        movement = -dir.normalized*speed;
+            /**Recorrer array de puntos de control para ver donde lo posiciono.
+             * Crear un array de puntos de control
+             * Recorrer el array del final hacia delante
+             * Añadir una transicion suave entre que cargo la escena y no.
+             */
+            StartCoroutine("restart");
+        }
+        else if(collision.collider.tag == "win")
+        {
+            Debug.Log("entro en COLLISION WIN");
+            movement = new Vector3(0, 0, 0);
+            Animator animator = collision.collider.gameObject.GetComponent<Animator>();
+            /*if (animator != null)
+            {
+                animator.Play("openChest");
+                while (animator.GetCurrentAnimatorStateInfo()) ;
+            }*/
+            SceneManager.LoadScene("PruebaWinScene");
+        }
+        else if(collision.collider.tag == "controlPoint")
+        {
+            controlPos = collision.collider.transform.position;
+            collision.collider.gameObject.GetComponent<ActivateControlPoint>().StartCoroutine("activate");
+            collision.collider.gameObject.GetComponent<BoxCollider>().enabled = false;
+        }
         
-         if(collision.gameObject.tag == "top" || collision.gameObject.tag == "bottom")
-         {
-             movement.y = -movement.y;
-         }
-         else if(collision.gameObject.tag == "right" || collision.gameObject.tag == "left")
-         {
-             movement.x = -movement.x;
-         }
-}*/
-
+    }
 
     private void FixedUpdate()
     {
-        rb.velocity = movement;
+        transform.Translate(movement * speed * Time.deltaTime);
     }
 
     private void Awake()
     {
         timeFromPreviousMove = 0.0f;
         rb = GetComponent<Rigidbody>();
+        controlPos = transform.position;
+    }
 
-        rb.AddForce(movement, ForceMode.VelocityChange);
+    IEnumerator restart()
+    {
+        gameObject.transform.position = controlPos;
+        yield return new WaitForSeconds(1);
+        movement = new Vector3(1, 1, 0);
     }
 }
