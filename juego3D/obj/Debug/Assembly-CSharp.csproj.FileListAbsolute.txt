@@ -292,3 +292,7 @@ C:\Users\Juanjo\Desktop\Carpetas\universidad\4o\Videojuegos\juego3D\videojuego3D
 C:\Users\Juanjo\Desktop\Carpetas\universidad\4o\Videojuegos\juego3D\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\Juanjo\Desktop\Carpetas\universidad\4o\Videojuegos\juego3D\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.dll
 C:\Users\Juanjo\Desktop\Carpetas\universidad\4o\Videojuegos\juego3D\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Juanjo\Desktop\Nueva carpeta\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.csprojAssemblyReference.cache
+C:\Users\Juanjo\Desktop\Nueva carpeta\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.csproj.CoreCompileInputs.cache
+C:\Users\Juanjo\Desktop\Nueva carpeta\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.dll
+C:\Users\Juanjo\Desktop\Nueva carpeta\videojuego3D\juego3D\obj\Debug\Assembly-CSharp.pdb

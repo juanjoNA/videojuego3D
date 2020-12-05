@@ -13,6 +13,7 @@ public class playerMovement : MonoBehaviour
     private ActivateControlPoint scriptActivation;
     public int speed;
     private ChangeScenes csManager;
+    private int room = 0;
 
     private void Update()
     {
@@ -72,6 +73,16 @@ public class playerMovement : MonoBehaviour
         
     }
 
+    private void OnCollisionExit(Collision collision)
+    {
+        if(collision.collider.tag == "controlCamera")
+        {
+            if (movement.y > 0) room--;
+            else if (movement.y < 0) room++;
+        }
+    }
+
+
     private void FixedUpdate()
     {
         transform.Translate(movement * speed * Time.deltaTime);
@@ -89,5 +100,10 @@ public class playerMovement : MonoBehaviour
         gameObject.transform.position = controlPos;
         yield return new WaitForSeconds(1);
         movement = new Vector3(1, 1, 0);
+    }
+
+    public int getRoom()
+    {
+        return room;
     }
 }

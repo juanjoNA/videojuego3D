@@ -9,6 +9,7 @@ TagManager:
   - palette
   - win
   - controlPoint
+  - cameraPoint
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,7 @@ public class PaletteMovement : MonoBehaviour
     public GameObject player;
     private Rigidbody rb;
     public float ymin_, ymax_;
+    public int room;
 
     private void Start()
     {
@@ -41,7 +42,7 @@ public class PaletteMovement : MonoBehaviour
                             if (posPlayer.y <= y - 2) movement.x = -1;
                             else movement.x = 1;
 
-                            transform.Translate(movement * speed * 1.5f * Time.deltaTime);
+                            transform.Translate(movement * speed * 3 * Time.deltaTime);
                         }
                     }
                     else transform.Translate(movement * speed * Time.deltaTime);
@@ -52,15 +53,14 @@ public class PaletteMovement : MonoBehaviour
             {
                 if (distX < distancePlayer)
                 {
-                    float ymax = transform.GetChild(0).position.y;
-                    float ymin = ymax+transform.childCount;
-                    float y = (ymax + ymin) / 2;
-                    if (posPlayer.y >= y+2 || posPlayer.y <= y-2)
+                    float ymin = transform.GetChild(0).position.y;
+                    float ymax = ymin + transform.childCount-1;
+                    if (posPlayer.y > ymax || posPlayer.y < ymin)
                     {
-                        if(posPlayer.y <= y-2) movement.y = -1;
-                        else movement.y = 1;
+                        if(posPlayer.y > ymax) movement.y = 1;
+                        else movement.y = -1;
                         
-                        transform.Translate(movement * speed * 1.5f * Time.deltaTime);
+                        transform.Translate(movement * speed * 2 * Time.deltaTime);
                     }
                     else  transform.Translate(movement * speed * Time.deltaTime);
                     
@@ -82,7 +82,24 @@ public class PaletteMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (movement.x != 0) movement.x = -movement.x;
-        else if (movement.y != 0) movement.y = -movement.y;
+        if(collision.collider.tag == "wall")
+        {
+            float newPos;
+            if (movement.x != 0)
+            {
+                if (movement.x > 0) newPos = collision.collider.transform.position.x - transform.childCount;
+                else newPos = collision.collider.transform.position.x + collision.collider.bounds.size.x;
+                movement.x = -movement.x;
+                transform.position = new Vector3(newPos, transform.position.y, transform.position.z);
+            }
+            else if (movement.y != 0)
+            {
+                if (movement.y > 0) newPos = collision.collider.transform.position.y - transform.childCount;
+                else newPos = collision.collider.transform.position.y + collision.collider.bounds.size.y;
+                movement.y = -movement.y;
+                transform.position = new Vector3(transform.position.x, newPos, transform.position.z);
+            }
+        }
+        
     }
 }
