@@ -10,8 +10,8 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 1207113277668151758}
-    m_Position: {x: 311.55066, y: 140.09485, z: 0}
+    m_State: {fileID: 7395080138076112099}
+    m_Position: {x: 270, y: 110, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -21,7 +21,7 @@ AnimatorStateMachine:
   m_EntryPosition: {x: 50, y: 120, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 1207113277668151758}
+  m_DefaultState: {fileID: 7395080138076112099}
 --- !u!1102 &-617676529772875064
 AnimatorState:
   serializedVersion: 5
@@ -70,14 +70,14 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &1207113277668151758
+--- !u!1102 &7395080138076112099
 AnimatorState:
   serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Esqueleto|Impulso
+  m_Name: Esqueleto|Saludo
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -90,7 +90,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -1723904399236034431, guid: 3dde5350fcaae7a4b909131cf00b9375, type: 3}
+  m_Motion: {fileID: -7200110980737299530, guid: 978bec7b76874754990e9cf2a8de43c0, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

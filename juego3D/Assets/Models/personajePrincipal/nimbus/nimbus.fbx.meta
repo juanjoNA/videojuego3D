@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1cd4f1d0c9c87d4428429c1638f7e8e9
+guid: 978bec7b76874754990e9cf2a8de43c0
 ModelImporter:
   serializedVersion: 20101
   internalIDToNameTable:
@@ -10,18 +10,17 @@ ModelImporter:
       74: -1723904399236034431
     second: Esqueleto|Impulso
   - first:
-      74: -6296252552722434926
-    second: Esqueleto|Impulso.001
-  - first:
-      74: 3291871939757956584
-    second: Esqueleto|Saludar
+      74: -7200110980737299530
+    second: Esqueleto|Saludo
   - first:
       74: 8676840025714966940
     second: Esqueleto|Victoria
+  externalObjects:
   - first:
-      74: -433011179277567496
-    second: Esqueleto|Saludar (1)
-  externalObjects: {}
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: palette
+    second: {fileID: 2100000, guid: 1edcd9adf99e8b44eb9531008df5c3c9, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -50,18 +49,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Esqueleto|Saludar (1)
-      takeName: Esqueleto|Saludar
+      name: Esqueleto|Derrota
+      takeName: Esqueleto|Derrota
       internalID: 0
       firstFrame: 0
-      lastFrame: 102
+      lastFrame: 100
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -83,7 +82,7 @@ ModelImporter:
       takeName: Esqueleto|Impulso
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -108,47 +107,18 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Esqueleto|Impulso.001
-      takeName: Esqueleto|Impulso.001
+      name: Esqueleto|Saludo
+      takeName: Esqueleto|Saludo
       internalID: 0
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 76
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Esqueleto|Saludar
-      takeName: Esqueleto|Saludar
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 102
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -170,7 +140,7 @@ ModelImporter:
       takeName: Esqueleto|Victoria
       internalID: 0
       firstFrame: 0
-      lastFrame: 91
+      lastFrame: 52
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
