@@ -14,6 +14,7 @@ public class playerMovement : MonoBehaviour
     public int speed;
     private ChangeScenes csManager;
     private int room = 0;
+    private bool exit = false;
 
     private void Update()
     {
@@ -73,12 +74,20 @@ public class playerMovement : MonoBehaviour
         
     }
 
-    private void OnCollisionExit(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if(collision.collider.tag == "controlCamera")
+        if (other.tag == "cameraPoint" && !exit) exit = true;
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "cameraPoint" && exit)
         {
-            if (movement.y > 0) room--;
-            else if (movement.y < 0) room++;
+            int num = int.Parse(other.name.Substring(other.name.Length - 1));
+            if (room == num) room--;
+            else if (room < num) room++;
+            exit = false;
         }
     }
 

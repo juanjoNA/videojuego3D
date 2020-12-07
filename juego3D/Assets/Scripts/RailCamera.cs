@@ -39,7 +39,7 @@ public class RailCamera : MonoBehaviour
             return ProjectOnSegment(nodes[0], nodes[1], pos);
         }else if(closestNode == countNode - 1)
         {
-            return ProjectOnSegment(nodes[countNode - 1], nodes[countNode - 2], pos);
+            return nodes[countNode - 1];
         }
         else
         {
@@ -65,46 +65,17 @@ public class RailCamera : MonoBehaviour
     {
         float shortDistance = 0.0f;
 
-        if(currentNode == 0)
+        for (int i = currentNode; i <= currentNode + 1; i++)
         {
-            for (int i = currentNode; i <= currentNode + 1; i++)
+            float sqrDist = (nodes[i] - pos).sqrMagnitude;
+            if (shortDistance == 0.0f || sqrDist < shortDistance)
             {
-                float sqrDist = (nodes[i] - pos).sqrMagnitude;
-                if (shortDistance == 0.0f || sqrDist < shortDistance)
-                {
-                    shortDistance = sqrDist;
-                    currentNode = i;
-                }
+                shortDistance = sqrDist;
+                currentNode = i;
             }
         }
-        else if(currentNode == countNode)
-        {
-            for (int i = currentNode - 1; i <= currentNode + 1; i++)
-            {
-                float sqrDist = (nodes[i] - pos).sqrMagnitude;
-                if (shortDistance == 0.0f || sqrDist < shortDistance)
-                {
-                    shortDistance = sqrDist;
-                    currentNode = i;
-                }
-            }
-        }
-        else
-        {
-            for (int i = currentNode-1; i <= currentNode+1; i++)
-            {
-                float sqrDist = (nodes[i] - pos).sqrMagnitude;
-                if (shortDistance == 0.0f || sqrDist < shortDistance)
-                {
-                    shortDistance = sqrDist;
-                    currentNode = i;
-                }
-            }
-        }
-       
 
         return currentNode;
-
     }
 
     public Vector3 ProjectOnSegment(Vector3 v1, Vector3 v2, Vector3 pos)

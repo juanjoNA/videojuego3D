@@ -9,8 +9,7 @@ public class PaletteMovement : MonoBehaviour
     public float distancePlayer;
     public GameObject player;
     private Rigidbody rb;
-    public float ymin_, ymax_;
-    public int room;
+    public float top, bottom;
 
     private void Start()
     {
@@ -20,7 +19,7 @@ public class PaletteMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (true)
+        if (bottom < player.transform.position.y && top > player.transform.position.y)
         {
             Vector3 posPlayer = player.transform.position;
             Vector3 posPalette = transform.position;
@@ -30,24 +29,20 @@ public class PaletteMovement : MonoBehaviour
 
             if (movement.x != 0)
             {
-                if (true)
+                if (distX < distancePlayer)
                 {
-                    if (distX > distancePlayer)
+                    float xmax = transform.GetChild(0).position.x;
+                    float xmin = xmax + transform.childCount-1;
+                    if (posPlayer.y > xmax || posPlayer.y < xmin)
                     {
-                        float xmax = transform.GetChild(0).position.x;
-                        float xmin = xmax + transform.childCount;
-                        float y = (xmax + xmin) / 2;
-                        if (posPlayer.x >= y + 2 || posPlayer.x <= y - 2)
-                        {
-                            if (posPlayer.y <= y - 2) movement.x = -1;
-                            else movement.x = 1;
+                        if (posPlayer.y <= xmax) movement.x = -1;
+                        else movement.x = 1;
 
-                            transform.Translate(movement * speed * 3 * Time.deltaTime);
-                        }
+                        transform.Translate(movement * speed * 2 * Time.deltaTime);
                     }
-                    else transform.Translate(movement * speed * Time.deltaTime);
-
                 }
+                else transform.Translate(movement * speed * Time.deltaTime);
+
             }
             else if (movement.y != 0)
             {
@@ -60,7 +55,7 @@ public class PaletteMovement : MonoBehaviour
                         if(posPlayer.y > ymax) movement.y = 1;
                         else movement.y = -1;
                         
-                        transform.Translate(movement * speed * 2 * Time.deltaTime);
+                        transform.Translate(movement * speed * 5 * Time.deltaTime);
                     }
                     else  transform.Translate(movement * speed * Time.deltaTime);
                     
@@ -70,13 +65,10 @@ public class PaletteMovement : MonoBehaviour
                     transform.Translate(movement * speed * Time.deltaTime);
                 }
             }
-
-
-            
-            else if(distX < 50)
-            {
-                transform.Translate(movement*speed);
-            }
+        }
+        else
+        {
+            transform.Translate(movement * speed * Time.deltaTime);
         }
     }
 
@@ -87,8 +79,8 @@ public class PaletteMovement : MonoBehaviour
             float newPos;
             if (movement.x != 0)
             {
-                if (movement.x > 0) newPos = collision.collider.transform.position.x - transform.childCount;
-                else newPos = collision.collider.transform.position.x + collision.collider.bounds.size.x;
+                if (movement.x > 0)  newPos = collision.collider.transform.position.x - transform.childCount;
+                else  newPos = collision.collider.transform.position.x + 1;
                 movement.x = -movement.x;
                 transform.position = new Vector3(newPos, transform.position.y, transform.position.z);
             }

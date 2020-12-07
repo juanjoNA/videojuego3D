@@ -7,21 +7,17 @@ public class ActivateControlPoint : MonoBehaviour
     public GameObject wall;
     private bool active;
 
-    private void Start()
-    {
-
-    }
-
 
     public IEnumerator activate()
     {
         if (!active)
         {
-            int childs = wall.transform.childCount;
+            float childs = wall.transform.childCount;
+            float t = 1.5f / childs;
             for (int i = 0; i < childs; i++)
             {
                 wall.transform.GetChild(i).GetComponent<MeshRenderer>().enabled = true;
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(t);
             }
             wall.GetComponent<BoxCollider>().enabled = true;
             wall.tag = "wall";
