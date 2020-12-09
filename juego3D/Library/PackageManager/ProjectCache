@@ -5,15 +5,15 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637427937967065012
-    m_Hash: 3166430037
+      ticks: 637431156480000000
+    m_Hash: 3502389107
   m_LockFileStatus:
     m_FilePath: C:/Users/Juanjo/Desktop/Nueva carpeta/videojuego3D/juego3D/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 637428487449632374
+      ticks: 637431239141166119
     m_Hash: 3780237787
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
