@@ -73,7 +73,7 @@
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
     <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
     <Compile Include="Assets\Scripts\PaletteMovement.cs" />
-    <Compile Include="Assets\Scripts\MoveCamera.cs" />
+    <Compile Include="Assets\Scripts\AnimationScript.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Models\trampasYobstaculos\torreta\New Text Document.txt" />

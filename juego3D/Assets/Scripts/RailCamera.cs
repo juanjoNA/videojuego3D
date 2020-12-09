@@ -39,7 +39,8 @@ public class RailCamera : MonoBehaviour
             return ProjectOnSegment(nodes[0], nodes[1], pos);
         }else if(closestNode == countNode - 1)
         {
-            return nodes[countNode - 1];
+            return ProjectOnSegment(nodes[countNode-1], nodes[countNode-2], pos);
+
         }
         else
         {
@@ -65,9 +66,10 @@ public class RailCamera : MonoBehaviour
     {
         float shortDistance = 0.0f;
 
-        for (int i = currentNode; i <= currentNode + 1; i++)
+        for (int i = 0; i < countNode; i++)
         {
-            float sqrDist = (nodes[i] - pos).sqrMagnitude;
+            Vector3 resta = (nodes[i] - pos);
+            float sqrDist = resta.sqrMagnitude;
             if (shortDistance == 0.0f || sqrDist < shortDistance)
             {
                 shortDistance = sqrDist;

@@ -6,39 +6,35 @@ using UnityEngine.SceneManagement;
 
 public class playerMovement : MonoBehaviour
 {
-    private Vector3 movement = new Vector3(1, 1, 0);
     Rigidbody rb;
     float timeFromPreviousMove;
     private Vector3 controlPos;
-    private ActivateControlPoint scriptActivation;
     public int speed;
     private ChangeScenes csManager;
-    private int room = 0;
-    private bool exit = false;
+    private Vector3 lastFrameVelocity;
 
     private void Update()
     {
+        lastFrameVelocity = rb.velocity;
         timeFromPreviousMove += Time.deltaTime;
         if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.2f)
         {
-            movement.y = -movement.y;
+            rb.velocity = new Vector3(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
             timeFromPreviousMove = 0.0f;
         }
+
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "wall" || collision.collider.tag == "palette")
+
+        if(collision.collider.tag == "palette")
         {
-            Vector3 side = collision.contacts[0].normal;
-            if(side == transform.up) movement.y = 1;
-            else if( side == -transform.up) movement.y = -1;
-            else if( side == transform.right)  movement.x = 1;
-            else if( side == -transform.right) movement.x = -1;
-            
-        }else if(collision.collider.tag == "enemy")
+            Bounce(collision.contacts[0].normal);
+        }
+        if (collision.collider.tag == "enemy")
         {
-            movement = new Vector3(0, 0, 0);
+            rb.velocity = Vector3.zero;
             Animation anim = collision.collider.gameObject.GetComponent<Animation>();
             if (anim != null && !anim.isPlaying)
             {
@@ -56,45 +52,22 @@ public class playerMovement : MonoBehaviour
         else if(collision.collider.tag == "win")
         {
             Debug.Log("entro en COLLISION WIN");
-            movement = new Vector3(0, 0, 0);
-            Animator animator = collision.collider.gameObject.GetComponent<Animator>();
-            /*if (animator != null)
-            {
-                animator.Play("openChest");
-                while (animator.GetCurrentAnimatorStateInfo()) ;
-            }*/
-            SceneManager.LoadScene("PruebaWinScene");
+            rb.velocity = Vector3.zero;
+            collision.collider.gameObject.GetComponent<AnimationScript>().activarAnimacion();
+            //SceneManager.LoadScene("PruebaWinScene");
         }
-        else if(collision.collider.tag == "controlPoint")
-        {
-            controlPos = collision.collider.transform.position;
-            collision.collider.gameObject.GetComponent<ActivateControlPoint>().StartCoroutine("activate");
-            collision.collider.gameObject.GetComponent<BoxCollider>().enabled = false;
-        }
+        
         
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "cameraPoint" && !exit) exit = true;
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "cameraPoint" && exit)
+        if (other.tag == "controlPoint")
         {
-            int num = int.Parse(other.name.Substring(other.name.Length - 1));
-            if (room == num) room--;
-            else if (room < num) room++;
-            exit = false;
+            controlPos = other.transform.position;
+            other.gameObject.GetComponent<ActivateControlPoint>().StartCoroutine("activate");
+            other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
-    }
-
-
-    private void FixedUpdate()
-    {
-        transform.Translate(movement * speed * Time.deltaTime);
     }
 
     private void Awake()
@@ -102,17 +75,21 @@ public class playerMovement : MonoBehaviour
         timeFromPreviousMove = 0.0f;
         rb = GetComponent<Rigidbody>();
         controlPos = transform.position;
+        rb.velocity = new Vector3(-1, 1, 0) * speed;
     }
 
     IEnumerator restart()
     {
         gameObject.transform.position = controlPos;
-        yield return new WaitForSeconds(1);
-        movement = new Vector3(1, 1, 0);
+        yield return new WaitForSeconds(2);
+        rb.velocity = new Vector3(-1, 1, 0) * speed;
     }
 
-    public int getRoom()
+    private void Bounce(Vector3 collisionNormal)
     {
-        return room;
+        float speed = lastFrameVelocity.magnitude;
+        Vector3 direction = Vector3.Reflect(lastFrameVelocity.normalized, collisionNormal);
+
+        rb.velocity = direction * speed;
     }
 }
