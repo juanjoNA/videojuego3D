@@ -72,11 +72,13 @@ public class playerMovement : MonoBehaviour
     {
         rb.velocity = Vector3.zero;
         AnimationScript aScript = enemy.GetComponent<AnimationScript>();
-        if(aScript != null) yield return aScript.WaitForAnimation();
-        gameObject.transform.position = controlPos;
+        if (aScript != null) yield return aScript.WaitForAnimation();
         anim.SetTrigger("llorar");
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(3.5f);
+        gameObject.transform.position = controlPos;
+        yield return new WaitForSeconds(0.5f);
         rb.velocity = new Vector3(-1, 1, 0) * speed;
+
 
     }
 
@@ -92,8 +94,8 @@ public class playerMovement : MonoBehaviour
     {
         
         rb.velocity = Vector3.zero;
-        transform.position = new Vector3(   cofre.transform.position.x- 0.3f,
-                                            cofre.transform.position.y - 1f - cofre.GetComponent<Collider>().bounds.size.y,
+        transform.position = new Vector3(   cofre.transform.position.x + cofre.GetComponent<Collider>().bounds.size.y,
+                                            cofre.transform.position.y,
                                             cofre.transform.position.z);
         anim.SetTrigger("victoria");
         yield return cofre.GetComponent<AnimationScript>().WaitForAnimation();
