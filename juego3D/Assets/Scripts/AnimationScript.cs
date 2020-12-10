@@ -5,18 +5,20 @@ using UnityEngine;
 public class AnimationScript : MonoBehaviour
 {
     private Animator animator;
+    public AnimationClip anim;
 
     private void Start()
     {
-        animator = transform.GetComponent<Animator>();
+        animator = GetComponent<Animator>();
     }
 
-    public void activarAnimacion()
+    public IEnumerator WaitForAnimation()
     {
-        int x = 0;
-        if (animator != null)
+        if(anim != null)
         {
-            animator.SetBool("open", true);
+            float durada = anim.length;
+            animator.SetTrigger("animar");
+            yield return new WaitForSeconds(durada);
         }
     }
 }

@@ -12,6 +12,16 @@ public class playerMovement : MonoBehaviour
     public int speed;
     private ChangeScenes csManager;
     private Vector3 lastFrameVelocity;
+    private Animator anim;
+
+    private void Awake()
+    {
+        timeFromPreviousMove = 0.0f;
+        rb = GetComponent<Rigidbody>();
+        anim = gameObject.GetComponent<Animator>();
+        controlPos = transform.position;
+        rb.velocity = new Vector3(-1, 1, 0) * speed;
+    }
 
     private void Update()
     {
@@ -19,6 +29,7 @@ public class playerMovement : MonoBehaviour
         timeFromPreviousMove += Time.deltaTime;
         if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.2f)
         {
+            anim.SetTrigger("impulsar");
             rb.velocity = new Vector3(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
             timeFromPreviousMove = 0.0f;
         }
@@ -34,27 +45,12 @@ public class playerMovement : MonoBehaviour
         }
         if (collision.collider.tag == "enemy")
         {
-            rb.velocity = Vector3.zero;
-            Animation anim = collision.collider.gameObject.GetComponent<Animation>();
-            if (anim != null && !anim.isPlaying)
-            {
-                anim.Play();
-                while (anim.isPlaying) ;
-            }
-
-            /**Recorrer array de puntos de control para ver donde lo posiciono.
-             * Crear un array de puntos de control
-             * Recorrer el array del final hacia delante
-             * Añadir una transicion suave entre que cargo la escena y no.
-             */
-            StartCoroutine("restart");
+            StartCoroutine("restart", (collision.collider.gameObject));
         }
         else if(collision.collider.tag == "win")
         {
-            Debug.Log("entro en COLLISION WIN");
-            rb.velocity = Vector3.zero;
-            collision.collider.gameObject.GetComponent<AnimationScript>().activarAnimacion();
-            //SceneManager.LoadScene("PruebaWinScene");
+            StartCoroutine("animacionWin",(collision.collider.gameObject));
+            
         }
         
         
@@ -70,19 +66,18 @@ public class playerMovement : MonoBehaviour
         }
     }
 
-    private void Awake()
-    {
-        timeFromPreviousMove = 0.0f;
-        rb = GetComponent<Rigidbody>();
-        controlPos = transform.position;
-        rb.velocity = new Vector3(-1, 1, 0) * speed;
-    }
+    
 
-    IEnumerator restart()
+    private IEnumerator restart(GameObject enemy)
     {
+        rb.velocity = Vector3.zero;
+        AnimationScript aScript = enemy.GetComponent<AnimationScript>();
+        if(aScript != null) yield return aScript.WaitForAnimation();
         gameObject.transform.position = controlPos;
-        yield return new WaitForSeconds(2);
+        anim.SetTrigger("llorar");
+        yield return new WaitForSeconds(4f);
         rb.velocity = new Vector3(-1, 1, 0) * speed;
+
     }
 
     private void Bounce(Vector3 collisionNormal)
@@ -91,5 +86,19 @@ public class playerMovement : MonoBehaviour
         Vector3 direction = Vector3.Reflect(lastFrameVelocity.normalized, collisionNormal);
 
         rb.velocity = direction * speed;
+    }
+
+    private IEnumerator animacionWin(GameObject cofre)
+    {
+        
+        rb.velocity = Vector3.zero;
+        transform.position = new Vector3(   cofre.transform.position.x- 0.3f,
+                                            cofre.transform.position.y - 1f - cofre.GetComponent<Collider>().bounds.size.y,
+                                            cofre.transform.position.z);
+        anim.SetTrigger("victoria");
+        yield return cofre.GetComponent<AnimationScript>().WaitForAnimation();
+
+        Debug.Log("Ahora cambio de escena");
+        //SceneManager.LoadScene("PruebaWinScene");
     }
 }
