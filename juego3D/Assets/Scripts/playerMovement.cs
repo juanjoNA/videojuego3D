@@ -14,6 +14,7 @@ public class playerMovement : MonoBehaviour
     private Animator anim;
 
     private bool weapon = false;
+    private bool lose = false;
 
     private void Awake()
     {
@@ -82,14 +83,19 @@ public class playerMovement : MonoBehaviour
 
     private IEnumerator restart(GameObject enemy)
     {
-        rb.velocity = Vector3.zero;
-        AnimationScript aScript = enemy.GetComponent<AnimationScript>();
-        if (aScript != null) yield return aScript.WaitForAnimation();
-        anim.SetTrigger("llorar");
-        yield return new WaitForSeconds(3.5f);
-        gameObject.transform.position = controlPos;
-        yield return new WaitForSeconds(0.5f);
-        rb.velocity = new Vector3(-1, 1, 0) * speed;
+        if (!lose)
+        {
+            lose = true;
+            rb.velocity = Vector3.zero;
+            AnimationScript aScript = enemy.GetComponent<AnimationScript>();
+            if (aScript != null) yield return aScript.WaitForAnimation();
+            anim.SetTrigger("llorar");
+            yield return new WaitForSeconds(3.5f);
+            gameObject.transform.position = controlPos;
+            yield return new WaitForSeconds(0.5f);
+            rb.velocity = new Vector3(-1, 1, 0) * speed;
+            lose = false;
+        }
 
 
     }
@@ -99,7 +105,19 @@ public class playerMovement : MonoBehaviour
         float speed = lastFrameVelocity.magnitude;
         Vector3 direction = Vector3.Reflect(lastFrameVelocity.normalized, collisionNormal);
 
+
+        Debug.DrawLine(transform.position, collisionNormal, Color.blue);
+        Debug.DrawLine(transform.position, direction, Color.red);
+
         rb.velocity = direction * speed;
+
+        if( (collisionNormal.x < 0 && rb.velocity.x > 0) || 
+            (collisionNormal.x > 0 && rb.velocity.x < 0) || 
+            (collisionNormal.y < 0 && rb.velocity.y > 0) || 
+            (collisionNormal.y > 0 && rb.velocity.y < 0) )
+        {
+            rb.velocity = lastFrameVelocity;
+        }
     }
 
     private IEnumerator animacionWin(GameObject cofre)
