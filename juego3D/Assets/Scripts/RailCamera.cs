@@ -47,8 +47,8 @@ public class RailCamera : MonoBehaviour
             Vector3 leftSegment = ProjectOnSegment(nodes[closestNode - 1], nodes[closestNode], pos);
             Vector3 rightSegment = ProjectOnSegment(nodes[closestNode + 1], nodes[closestNode], pos);
 
-            //Debug.DrawLine(pos, leftSegment, Color.red);
-            //Debug.DrawLine(pos, rightSegment, Color.blue);
+            Debug.DrawLine(pos, leftSegment, Color.red);
+            Debug.DrawLine(pos, rightSegment, Color.blue);
 
             if((pos - leftSegment).sqrMagnitude <= (pos - rightSegment).sqrMagnitude)
             {

@@ -10,6 +10,10 @@ TagManager:
   - win
   - controlPoint
   - cameraPoint
+  - weapon
+  - openerWall
+  - rail
+  - openerEnemy
   layers:
   - Default
   - TransparentFX

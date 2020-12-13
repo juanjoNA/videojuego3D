@@ -15,6 +15,7 @@ public class playerMovement : MonoBehaviour
 
     private bool weapon = false;
     private bool lose = false;
+    private bool onRail = false;
 
     private void Awake()
     {
@@ -31,8 +32,16 @@ public class playerMovement : MonoBehaviour
         timeFromPreviousMove += Time.deltaTime;
         if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.2f)
         {
-            anim.SetTrigger("impulsar");
-            rb.velocity = new Vector3(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
+            if (onRail)
+            {
+                rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
+            }
+            else
+            {
+                anim.SetTrigger("impulsar");
+                rb.velocity = new Vector3(rb.velocity.x, -rb.velocity.y, rb.velocity.z);
+            }
+            
             timeFromPreviousMove = 0.0f;
         }
 
@@ -65,8 +74,19 @@ public class playerMovement : MonoBehaviour
                 Destroy(collision.collider.gameObject);
             }
         }
-        
-        
+        else if (collision.collider.tag == "openerEnemy")
+        {
+            if (weapon)
+            {
+                Destroy(collision.collider.gameObject);
+            }
+            else
+            {
+                StartCoroutine("restart", (collision.collider.gameObject));
+            }
+        }
+
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -77,9 +97,25 @@ public class playerMovement : MonoBehaviour
             other.gameObject.GetComponent<ActivateControlPoint>().StartCoroutine("activate");
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
+        else if(other.tag == "rail")
+        {
+            rb.velocity = Vector3.zero;
+            onRail = true;
+            transform.position = new Vector3(   other.transform.GetChild(0).transform.position.x,
+                                                other.transform.GetChild(0).transform.position.y + 1.0f,
+                                                other.transform.GetChild(0).transform.position.z);
+            rb.velocity = new Vector3(lastFrameVelocity.x/2, 0, 0);
+        }
     }
 
-    
+    private void OnTriggerExit(Collider other)
+    {
+        onRail = false;
+        rb.velocity = new Vector3(rb.velocity.x*2, speed, 0);
+    }
+
+
+
 
     private IEnumerator restart(GameObject enemy)
     {
