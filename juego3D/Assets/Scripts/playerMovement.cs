@@ -10,9 +10,10 @@ public class playerMovement : MonoBehaviour
     float timeFromPreviousMove;
     private Vector3 controlPos;
     public int speed;
-    private ChangeScenes csManager;
     private Vector3 lastFrameVelocity;
     private Animator anim;
+
+    private bool weapon = false;
 
     private void Awake()
     {
@@ -47,10 +48,21 @@ public class playerMovement : MonoBehaviour
         {
             StartCoroutine("restart", (collision.collider.gameObject));
         }
-        else if(collision.collider.tag == "win")
+        else if (collision.collider.tag == "win")
         {
-            StartCoroutine("animacionWin",(collision.collider.gameObject));
-            
+            StartCoroutine("animacionWin", (collision.collider.gameObject));
+        }
+        else if (collision.collider.tag == "weapon")
+        {
+            weapon = true;
+            Destroy(collision.collider.gameObject);
+        }
+        else if (collision.collider.tag == "openerWall")
+        {
+            if (weapon)
+            {
+                Destroy(collision.collider.gameObject);
+            }
         }
         
         

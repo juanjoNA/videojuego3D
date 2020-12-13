@@ -40,8 +40,7 @@ public class PaletteMovement : MonoBehaviour
                         if (posPlayer.y <= xmax) movement.x = -1;
                         else movement.x = 1;
 
-                        //transform.Translate(movement * speed * 2 * Time.deltaTime);
-                        rb.velocity *= 2;
+                        rb.velocity = movement * speed * 2;
                     }
                 }
             }
@@ -57,7 +56,6 @@ public class PaletteMovement : MonoBehaviour
                         else if (movement.y > 0) movement.y *= -1;
 
                         rb.velocity = movement * speed * 3;
-                        //transform.Translate(movement * speed * 5 * Time.deltaTime);
                     }else rb.velocity = movement * speed;
                 }
                 else rb.velocity = movement * speed;
