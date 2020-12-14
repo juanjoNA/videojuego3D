@@ -12,6 +12,12 @@ public class playerMovement : MonoBehaviour
     public int speed;
     private Vector3 lastFrameVelocity;
     private Animator anim;
+    public GameObject chest;
+
+    public AudioSource rebound;
+    public AudioSource bounce;
+    public AudioSource win;
+    public AudioSource defeat;
 
     private bool weapon = false;
     private bool lose = false;
@@ -30,8 +36,15 @@ public class playerMovement : MonoBehaviour
     {
         lastFrameVelocity = rb.velocity;
         timeFromPreviousMove += Time.deltaTime;
+        if (Input.GetKeyUp(KeyCode.L)) {
+            StartCoroutine("GMrestart");
+        }
+        else if (Input.GetKeyUp(KeyCode.W)) {
+            StartCoroutine("animacionWin", chest);
+        }
         if (Input.GetKey(KeyCode.Space) && timeFromPreviousMove > 0.2f)
         {
+            bounce.Play();
             if (onRail)
             {
                 rb.velocity = new Vector3(-rb.velocity.x, rb.velocity.y, rb.velocity.z);
@@ -52,6 +65,7 @@ public class playerMovement : MonoBehaviour
 
         if(collision.collider.tag == "palette")
         {
+            rebound.Play();
             Bounce(collision.contacts[0].normal);
         }
         if (collision.collider.tag == "enemy")
@@ -85,6 +99,7 @@ public class playerMovement : MonoBehaviour
                 StartCoroutine("restart", (collision.collider.gameObject));
             }
         }
+        else rebound.Play();
 
 
     }
@@ -115,7 +130,16 @@ public class playerMovement : MonoBehaviour
     }
 
 
-
+    private IEnumerator GMrestart()
+        {
+            rb.velocity = Vector3.zero;
+            anim.SetTrigger("llorar");
+            defeat.Play();
+            yield return new WaitForSeconds(3.5f);
+            gameObject.transform.position = controlPos;
+            yield return new WaitForSeconds(0.5f);
+            rb.velocity = new Vector3(-1, 1, 0) * speed;
+        }
 
     private IEnumerator restart(GameObject enemy)
     {
@@ -126,6 +150,7 @@ public class playerMovement : MonoBehaviour
             AnimationScript aScript = enemy.GetComponent<AnimationScript>();
             if (aScript != null) yield return aScript.WaitForAnimation();
             anim.SetTrigger("llorar");
+            defeat.Play();
             yield return new WaitForSeconds(3.5f);
             gameObject.transform.position = controlPos;
             yield return new WaitForSeconds(0.5f);
@@ -158,12 +183,12 @@ public class playerMovement : MonoBehaviour
 
     private IEnumerator animacionWin(GameObject cofre)
     {
-        
         rb.velocity = Vector3.zero;
         transform.position = new Vector3(   cofre.transform.position.x + cofre.GetComponent<Collider>().bounds.size.y,
                                             cofre.transform.position.y,
                                             cofre.transform.position.z);
         anim.SetTrigger("victoria");
+        win.Play();
         yield return cofre.GetComponent<AnimationScript>().WaitForAnimation();
 
         Debug.Log("Ahora cambio de escena");
