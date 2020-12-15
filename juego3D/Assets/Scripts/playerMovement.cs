@@ -20,6 +20,7 @@ public class playerMovement : MonoBehaviour
     public AudioSource defeat;
     public AudioSource weaponSound;
     public AudioSource murosApertura;
+    public AudioSource railSound;
 
     private bool weapon = false;
     private bool lose = false;
@@ -118,6 +119,7 @@ public class playerMovement : MonoBehaviour
         }
         else if(other.tag == "rail")
         {
+            railSound.Play();
             rb.velocity = Vector3.zero;
             onRail = true;
             transform.position = new Vector3(   other.transform.GetChild(0).transform.position.x,
@@ -129,6 +131,7 @@ public class playerMovement : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        railSound.Stop();
         onRail = false;
         rb.velocity = new Vector3(rb.velocity.x*2, speed, 0);
     }
