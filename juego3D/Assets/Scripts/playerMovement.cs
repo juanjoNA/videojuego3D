@@ -32,7 +32,7 @@ public class playerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = gameObject.GetComponent<Animator>();
         controlPos = transform.position;
-        rb.velocity = new Vector3(-1, 1, 0) * speed;
+        StartCoroutine(saludarEiniciar());
     }
 
     private void Update()
@@ -127,13 +127,31 @@ public class playerMovement : MonoBehaviour
                                                 other.transform.GetChild(0).transform.position.z);
             rb.velocity = new Vector3(lastFrameVelocity.x/2, 0, 0);
         }
+        else if(other.tag == "portal")
+        {
+            asociateNextPortal aNextP = other.gameObject.GetComponent<asociateNextPortal>();
+            if (aNextP.getNextPortal().gameObject.GetComponent<asociateNextPortal>().getCanTeleport())
+            {
+                Vector3 nextPos = aNextP.getNextPortal().transform.position;
+                aNextP.setTeleport(false);
+                transform.position = nextPos;
+            }
+            else
+            {
+                aNextP.getNextPortal().gameObject.GetComponent<asociateNextPortal>().setTeleport(true);
+            }
+            
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        railSound.Stop();
-        onRail = false;
-        rb.velocity = new Vector3(rb.velocity.x*2, speed, 0);
+        if(other.tag == "rail")
+        {
+            railSound.Stop();
+            onRail = false;
+            rb.velocity = new Vector3(rb.velocity.x * 2, speed, 0);
+        }
     }
 
 
@@ -200,5 +218,13 @@ public class playerMovement : MonoBehaviour
 
         Debug.Log("Ahora cambio de escena");
         //SceneManager.LoadScene("PruebaWinScene");
+    }
+
+    IEnumerator saludarEiniciar()
+    {
+        anim.SetTrigger("saludar");
+        yield return new WaitForSeconds(3f);
+
+        rb.velocity = new Vector3(-1, 1, 0) * speed;
     }
 }
