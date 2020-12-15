@@ -18,6 +18,8 @@ public class playerMovement : MonoBehaviour
     public AudioSource bounce;
     public AudioSource win;
     public AudioSource defeat;
+    public AudioSource weaponSound;
+    public AudioSource murosApertura;
 
     private bool weapon = false;
     private bool lose = false;
@@ -78,6 +80,7 @@ public class playerMovement : MonoBehaviour
         }
         else if (collision.collider.tag == "weapon")
         {
+            weaponSound.Play();
             weapon = true;
             Destroy(collision.collider.gameObject);
         }
@@ -85,6 +88,7 @@ public class playerMovement : MonoBehaviour
         {
             if (weapon)
             {
+                murosApertura.Play();
                 Destroy(collision.collider.gameObject);
             }
         }
