@@ -21,6 +21,7 @@ public class playerMovement : MonoBehaviour
     public AudioSource weaponSound;
     public AudioSource murosApertura;
     public AudioSource railSound;
+    public AudioSource portalSound;
 
     private bool weapon = false;
     private bool lose = false;
@@ -132,6 +133,7 @@ public class playerMovement : MonoBehaviour
             asociateNextPortal aNextP = other.gameObject.GetComponent<asociateNextPortal>();
             if (aNextP.getNextPortal().gameObject.GetComponent<asociateNextPortal>().getCanTeleport())
             {
+                portalSound.Play();
                 Vector3 nextPos = aNextP.getNextPortal().transform.position;
                 aNextP.setTeleport(false);
                 transform.position = nextPos;
